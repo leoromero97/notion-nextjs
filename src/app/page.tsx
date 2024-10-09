@@ -5,7 +5,7 @@ import {
   PartialDatabaseObjectResponse,
   DatabaseObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
-import type { DataPropTypes } from "./types";
+import type { DataPropTypes, PageDataPropTypes } from "./types";
 
 export default async function Home() {
   const query = await api.getObjectByDatabase();
@@ -15,22 +15,25 @@ export default async function Home() {
     | PartialDatabaseObjectResponse
     | DatabaseObjectResponse
   > = query.results;
-  let pagesData: DataPropTypes[] = [];
-  
+
   const getData = async () => {
+    const pagesData: DataPropTypes[] = [];
     for (const result of results) {
       const pageId = result.id;
       const pageData = await api.getDataPageById(pageId);
       if (pageData) {
         const id = pageData.id;
-        const name = (pageData as any).properties.Nombre?.title[0].plain_text;
-        const rol = (pageData as any)?.properties.rol.select.name;
-        const client = (pageData as any)?.properties.Cliente.rich_text[0]
-          .plain_text;
-        const imageUrl = (pageData as any)?.properties.Image.files[0].file.url;
+        const name = (pageData as PageDataPropTypes)?.properties?.Nombre
+          ?.title[0]?.plain_text;
+        const rol = (pageData as PageDataPropTypes)?.properties?.Rol?.select
+          ?.name;
+        const client = (pageData as PageDataPropTypes)?.properties?.Cliente
+          ?.rich_text[0].plain_text;
+        const imageUrl = (pageData as PageDataPropTypes)?.properties?.Image
+          .files[0].file.url;
         pagesData.push({ id, name, rol, client, imageUrl });
       } else {
-        console.log("Error procesando pagina con ID: ", pageId);
+        console.error("Error procesando pagina con ID: ", pageId);
       }
     }
     return pagesData;
@@ -57,7 +60,7 @@ export default async function Home() {
           {imageUrl && (
             <img
               src={imageUrl}
-              alt={"Foto de ".concat(name)}
+              alt={"Foto de ".concat(name ?? id)}
               style={{
                 borderRadius: "100%",
                 objectFit: "cover",
