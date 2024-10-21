@@ -11,6 +11,19 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        acai: {
+          DEFAULT: '#B42682',
+          900: '#7A215A',
+          700: '#B42682',
+          600: '#CD359C',
+          500: '#DF55B9',
+          400: '#EA7CD0',
+          300: '#F3AEE3',
+          200: '#F7D3F0',
+          100: '#FAE9F7',
+          50: '#FCF3FB',
+        },
+        white: '#F5F5F5'
       },
     },
   },

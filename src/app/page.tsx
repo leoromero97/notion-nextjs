@@ -6,6 +6,7 @@ import {
   DatabaseObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 import type { DataPropTypes, PageDataPropTypes } from "./types";
+import Seniority, { SeniorityPropTypes } from "./components/SenioritySymbol";
 
 export default async function Home() {
   const query = await api.getObjectByDatabase();
@@ -31,7 +32,20 @@ export default async function Home() {
           ?.rich_text[0].plain_text;
         const imageUrl = (pageData as PageDataPropTypes)?.properties?.Image
           .files[0].file.url;
-        pagesData.push({ id, name, rol, client, imageUrl });
+        const seniority = (pageData as PageDataPropTypes)?.properties?.Seniority
+          ?.select?.name;
+        const discipline = (pageData as PageDataPropTypes)?.properties
+          ?.Disciplina?.select?.name;
+
+        pagesData.push({
+          id,
+          name,
+          rol,
+          client,
+          imageUrl,
+          seniority,
+          discipline,
+        });
       } else {
         console.error("Error procesando pagina con ID: ", pageId);
       }
@@ -43,13 +57,14 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col items-center gap-4 justify-center place-items-center min-h-screen">
-      {data.map(({ id, imageUrl, name, rol, client }) => (
+      {data.map(({ id, imageUrl, name, rol, client, seniority }) => (
         <article
           key={id}
           className="flex gap-4 border rounded-md items-center py-4 px-8 border-slate-500"
         >
           <div className="flex flex-col gap-2 items-start">
             <h1 className="text-lg font-semibold">{name}</h1>
+            <Seniority types={seniority as SeniorityPropTypes['types']} />
             <span className="bg-cyan-200 text-cyan-950 rounded-full px-2 text-sm text-center w-fit">
               {rol}
             </span>
