@@ -6,7 +6,8 @@ import {
   DatabaseObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 import type { DataPropTypes, PageDataPropTypes } from "./types";
-import Seniority, { SeniorityPropTypes } from "./components/SenioritySymbol";
+import Seniority, { SeniorityPropTypes } from "./components/Seniority";
+import Avatar from "./components/Avatar";
 
 export default async function Home() {
   const query = await api.getObjectByDatabase();
@@ -63,8 +64,12 @@ export default async function Home() {
           className="flex gap-4 border rounded-md items-center py-4 px-8 border-slate-500"
         >
           <div className="flex flex-col gap-2 items-start">
-            <h1 className="text-lg font-semibold">{name}</h1>
-            <Seniority types={seniority as SeniorityPropTypes['types']} />
+            <Avatar
+              imageSrc={imageUrl}
+              imageAlt={"Foto de".concat(" ", name ?? id)}
+              name={name}
+            />
+            <Seniority types={seniority as SeniorityPropTypes["types"]} />
             <span className="bg-cyan-200 text-cyan-950 rounded-full px-2 text-sm text-center w-fit">
               {rol}
             </span>
@@ -72,20 +77,6 @@ export default async function Home() {
               {client}
             </span>
           </div>
-          {imageUrl && (
-            <img
-              src={imageUrl}
-              alt={"Foto de ".concat(name ?? id)}
-              style={{
-                borderRadius: "100%",
-                objectFit: "cover",
-                maxHeight: 150,
-              }}
-              height={150}
-              width={150}
-              loading="lazy"
-            />
-          )}
         </article>
       ))}
     </div>
