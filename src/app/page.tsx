@@ -5,9 +5,14 @@ import {
   PartialDatabaseObjectResponse,
   DatabaseObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
-import type { DataPropTypes, PageDataPropTypes } from "./types";
+import type {
+  DataPropTypes,
+  NotionClientPageType,
+  PageDataPropTypes,
+} from "./types";
 import Seniority, { SeniorityPropTypes } from "./components/Seniority";
 import Avatar from "./components/Avatar";
+import Client from "./components/Client";
 
 export default async function Home() {
   const query = await api.getObjectByDatabase();
@@ -23,26 +28,31 @@ export default async function Home() {
     for (const result of results) {
       const pageId = result.id;
       const pageData = await api.getDataPageById(pageId);
+      const clientsDatabaseId = (pageData as PageDataPropTypes)?.properties
+        ?.Cliente.relation[0].id;
+      const clientPageData = await api.getDataPageById(clientsDatabaseId ?? "");
       if (pageData) {
         const id = pageData.id;
         const name = (pageData as PageDataPropTypes)?.properties?.Nombre
           ?.title[0]?.plain_text;
         const rol = (pageData as PageDataPropTypes)?.properties?.Rol?.select
           ?.name;
-        const client = (pageData as PageDataPropTypes)?.properties?.Cliente
-          ?.rich_text[0].plain_text;
         const imageUrl = (pageData as PageDataPropTypes)?.properties?.Image
           .files[0].file.url;
         const seniority = (pageData as PageDataPropTypes)?.properties?.Seniority
           ?.select?.name;
         const discipline = (pageData as PageDataPropTypes)?.properties
           ?.Disciplina?.select?.name;
+        const clientImage = (clientPageData as NotionClientPageType).icon?.file
+          ?.url;
+        const clientName = (clientPageData as NotionClientPageType).properties
+          ?.Nombre?.title[0]?.plain_text;
 
         pagesData.push({
           id,
           name,
           rol,
-          client,
+          client: { imageUrl: clientImage, name: clientName },
           imageUrl,
           seniority,
           discipline,
@@ -58,7 +68,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col items-center gap-4 justify-center place-items-center min-h-screen">
-      {data.map(({ id, imageUrl, name, rol, client, seniority }) => (
+      {data.map(({ id, imageUrl, name, rol, seniority, client }) => (
         <article
           key={id}
           className="flex gap-4 border rounded-md items-center py-4 px-8 border-slate-500"
@@ -73,9 +83,11 @@ export default async function Home() {
             <span className="bg-cyan-200 text-cyan-950 rounded-full px-2 text-sm text-center w-fit">
               {rol}
             </span>
-            <span className="bg-green-200 text-green-950 rounded-full px-2 text-sm text-center w-fit">
-              {client}
-            </span>
+            <Client
+              imageAlt={"Imagen del cliente".concat(" ", name ?? id)}
+              imageSrc={client?.imageUrl}
+              name={name}
+            />
           </div>
         </article>
       ))}

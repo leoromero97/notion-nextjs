@@ -1,7 +1,10 @@
 export type DataPropTypes = {
   id: string;
   name?: string;
-  client?: string;
+  client?: {
+    name?: string;
+    imageUrl?: string;
+  };
   rol?: string;
   imageUrl?: string;
   seniority?: string;
@@ -27,10 +30,8 @@ export type NotionRolType = {
 };
 
 export type NotionClientType = {
-  rich_text: {
-    type?: string;
-    plain_text?: string;
-    href?: string | null;
+  relation: {
+    id?: string;
   }[];
 };
 
@@ -53,6 +54,17 @@ export type NotionDisciplineType = {
 export type NotionSeniorityType = {
   select: {
     name?: string;
+  };
+};
+
+export type NotionClientPageType = {
+  icon?: {
+    file?: {
+      url?: string;
+    };
+  };
+  properties?: {
+    Nombre: NotionNameType;
   };
 };
 
