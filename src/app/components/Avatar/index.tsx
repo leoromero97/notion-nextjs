@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import avatarFallbackImg from "@/app/assets/avatar-fallback.png";
+import avatarFallbackImg from "@/app/assets/images/avatar-fallback.png";
 import type { AvatarPropTypes } from "./types";
 
 export default function Avatar({ imageAlt, imageSrc, name }: AvatarPropTypes) {
