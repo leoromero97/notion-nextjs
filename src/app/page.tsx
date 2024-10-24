@@ -14,6 +14,7 @@ import Seniority, { SeniorityPropTypes } from "./components/Seniority";
 import Avatar from "./components/Avatar";
 import Client from "./components/Client";
 import Role from "./components/Role";
+import ProfileMonogram from "./components/ProfileMonogram";
 
 export default async function Home() {
   const query = await api.getObjectByDatabase();
@@ -82,9 +83,7 @@ export default async function Home() {
             />
             <Seniority types={seniority as SeniorityPropTypes["types"]} />
             {role && <Role name={role} />}
-            <span className="bg-cyan-200 text-cyan-950 rounded-full px-2 text-sm text-center w-fit">
-              {role}
-            </span>
+            {role && <ProfileMonogram name={role} />}
             <Client
               imageAlt={"Imagen del cliente".concat(" ", client?.name ?? id)}
               imageSrc={client?.imageUrl}

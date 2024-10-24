@@ -23,6 +23,16 @@ const config: Config = {
           100: '#FAE9F7',
           50: '#FCF3FB',
         },
+        ceibo: {
+          700: '#009933'
+        },
+        ocean: {
+          500: '#2970FF'
+        },
+        muta: {
+          100: '#ECE8FF',
+          900: '#481A98'
+        },
         white: '#F5F5F5'
       },
     },
