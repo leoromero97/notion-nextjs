@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      boxShadow: {
+        'card': '0px 4px 10px 0px #0000001A'
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
@@ -33,7 +36,10 @@ const config: Config = {
           100: '#ECE8FF',
           900: '#481A98'
         },
-        white: '#F5F5F5'
+        white: '#F5F5F5',
+        black: {
+          200: '#222222'
+        }
       },
     },
   },
