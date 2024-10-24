@@ -10,11 +10,8 @@ import type {
   NotionClientPageType,
   PageDataPropTypes,
 } from "./types";
-import Seniority, { SeniorityPropTypes } from "./components/Seniority";
-import Avatar from "./components/Avatar";
-import Client from "./components/Client";
-import Role from "./components/Role";
-import ProfileMonogram from "./components/ProfileMonogram";
+import CardCollaborator from "./components/CardCollaborator";
+import type { SeniorityPropTypes } from "./components/Seniority";
 
 export default async function Home() {
   const query = await api.getObjectByDatabase();
@@ -71,26 +68,14 @@ export default async function Home() {
   return (
     <div className="flex flex-col items-center gap-4 justify-center place-items-center min-h-screen">
       {data.map(({ id, imageUrl, name, role, seniority, client }) => (
-        <article
+        <CardCollaborator
           key={id}
-          className="flex gap-4 border rounded-md items-center py-4 px-8 border-slate-500"
-        >
-          <div className="flex flex-col gap-2 items-start">
-            <Avatar
-              imageSrc={imageUrl}
-              imageAlt={"Foto de".concat(" ", name ?? id)}
-              name={name}
-            />
-            <Seniority types={seniority as SeniorityPropTypes["types"]} />
-            {role && <Role name={role} />}
-            {role && <ProfileMonogram name={role} />}
-            <Client
-              imageAlt={"Imagen del cliente".concat(" ", client?.name ?? id)}
-              imageSrc={client?.imageUrl}
-              name={client?.name}
-            />
-          </div>
-        </article>
+          imageUrl={imageUrl}
+          name={name}
+          role={role}
+          seniority={seniority as SeniorityPropTypes["types"]}
+          client={client}
+        />
       ))}
     </div>
   );
