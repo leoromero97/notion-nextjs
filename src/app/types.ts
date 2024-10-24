@@ -5,7 +5,7 @@ export type DataPropTypes = {
     name?: string;
     imageUrl?: string;
   };
-  rol?: string;
+  role?: string;
   imageUrl?: string;
   seniority?: string;
   discipline?: string;

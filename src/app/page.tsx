@@ -13,6 +13,7 @@ import type {
 import Seniority, { SeniorityPropTypes } from "./components/Seniority";
 import Avatar from "./components/Avatar";
 import Client from "./components/Client";
+import Role from "./components/Role";
 
 export default async function Home() {
   const query = await api.getObjectByDatabase();
@@ -35,7 +36,7 @@ export default async function Home() {
         const id = pageData.id;
         const name = (pageData as PageDataPropTypes)?.properties?.Nombre
           ?.title[0]?.plain_text;
-        const rol = (pageData as PageDataPropTypes)?.properties?.Rol?.select
+        const role = (pageData as PageDataPropTypes)?.properties?.Rol?.select
           ?.name;
         const imageUrl = (pageData as PageDataPropTypes)?.properties?.Image
           .files[0].file.url;
@@ -51,7 +52,7 @@ export default async function Home() {
         pagesData.push({
           id,
           name,
-          rol,
+          role,
           client: { imageUrl: clientImage, name: clientName },
           imageUrl,
           seniority,
@@ -68,7 +69,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col items-center gap-4 justify-center place-items-center min-h-screen">
-      {data.map(({ id, imageUrl, name, rol, seniority, client }) => (
+      {data.map(({ id, imageUrl, name, role, seniority, client }) => (
         <article
           key={id}
           className="flex gap-4 border rounded-md items-center py-4 px-8 border-slate-500"
@@ -80,13 +81,14 @@ export default async function Home() {
               name={name}
             />
             <Seniority types={seniority as SeniorityPropTypes["types"]} />
+            {role && <Role name={role} />}
             <span className="bg-cyan-200 text-cyan-950 rounded-full px-2 text-sm text-center w-fit">
-              {rol}
+              {role}
             </span>
             <Client
-              imageAlt={"Imagen del cliente".concat(" ", name ?? id)}
+              imageAlt={"Imagen del cliente".concat(" ", client?.name ?? id)}
               imageSrc={client?.imageUrl}
-              name={name}
+              name={client?.name}
             />
           </div>
         </article>
